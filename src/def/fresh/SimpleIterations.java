@@ -11,7 +11,7 @@ public class SimpleIterations {
 
 	public static final int NUMBER_OF_ITERATIONS = 1000;
 	public static final double OUR_X0 = 0.2;
-	public static final int BIFURCATIONS_NUMBER = 32;
+	public static final int BIFURCATIONS_NUMBER = 128;
 
 	public static double getAfterIterations(double x0, double r)
 	{

@@ -10,11 +10,11 @@ import java.util.List;
  */
 public class CoordinateSystem extends JPanel {
 
-	public static final PairDouble zero = new PairDouble(30, 400);
+	public static final PairDouble zero = new PairDouble(30, 600);
 	public static final PairDouble size = new PairDouble(600, 400);
-	public static final double SCALE = 200;
-	public static final double STEP_FOR_R = 0.01;
-	public static final double EPS = 0.0001;
+	public static final double SCALE = 350;
+	public static final double STEP_FOR_R = 0.001;
+	public static final double EPS = 0.000001;
 
 	public CoordinateSystem() {
 		setSize(size.getXInt(), size.getYInt());
@@ -39,31 +39,16 @@ public class CoordinateSystem extends JPanel {
 	@Override
 	public void paint(Graphics graphics) {
 		super.paint(graphics);
-
-
+        Boolean f = true;
 		drawCoordinateLines(graphics);
-		drawOne(graphics);
 		drawMany(graphics);
-		Graphics2D graphics2D;
-		graphics2D.setS
-
-	}
-
-	public void drawOne(Graphics graphics) {
-		PairDouble from = new PairDouble(0, 0);
-		PairDouble to;
-		for (double r = 0; r <= 3; r += STEP_FOR_R) {
-			to = new PairDouble(r, SimpleIterations.getAfterIterationsWithX0(r));
-			drawLinePairs(graphics, from, to);
-			from = to;
-		}
 	}
 
 	public void drawMany(Graphics graphics) {
 		java.util.List<Double> from = SimpleIterations.getArrayAfterIterationsWithX0(3);
 		java.util.List<Double> to;
 		int totalCount = 1;
-		for (double r = 3 + STEP_FOR_R; r <= 5; r += STEP_FOR_R) {
+		for (double r = 0; r <= 5; r += STEP_FOR_R) {
 			to = SimpleIterations.getArrayAfterIterationsWithX0(r);
 			int count = 1;
 			for (Double f : to) {

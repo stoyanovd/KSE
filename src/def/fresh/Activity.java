@@ -21,7 +21,7 @@ public class Activity extends JFrame{
 		c.add(bp, BorderLayout.WEST);
 		rp = new (pg);
 		c.add(rp, BorderLayout.NORTH);// инициализация класса выбора графика функции*/
-		setSize(800, 600); // задание размеров
+		setSize(1200, 800); // задание размеров
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // задание параметров
 		// главного окна при закрытии
 		setVisible(true);
