@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class CoordinateSystem extends JPanel {
 
-	public static final PairDouble zero = new PairDouble(30, 600);
+	public static final PairDouble zero = new PairDouble(-190, 600);
 	public static final PairDouble size = new PairDouble(600, 400);
 	public static final double SCALE = 350;
 	public static final double STEP_FOR_R = 0.001;

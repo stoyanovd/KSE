@@ -3,12 +3,13 @@ package task1;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class DiagramForTask1 extends JPanel {
 
-    private static final int NUMBER_OF_ITERATION = 10000;
-    private static final double EPS = 0.0001;
-    private Graphics2D g2d;
+    protected static final int NUMBER_OF_ITERATION = 10000;
+    protected static final double EPS = 0.0001;
+    protected Graphics2D g2d;
 
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
@@ -22,12 +23,12 @@ public class DiagramForTask1 extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        BufferedImage buffer=new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_RGB);
+        BufferedImage buffer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
         g2d = buffer.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         drawHell();
-        g.drawImage(buffer,0,0,this);
+        g.drawImage(buffer, 0, 0, this);
     }
 
 
@@ -41,14 +42,14 @@ public class DiagramForTask1 extends JPanel {
         g2d.drawLine(0, startCoordinate_x, WIDTH, startCoordinate_x);
         for (int i = 1; i <= 10; i++) {
             g2d.drawLine(startCoordinate_x - 5, startCoordinate_x + i * (HEIGHT - startCoordinate_y) / 10, startCoordinate_x + 5, startCoordinate_x + i * (HEIGHT - startCoordinate_y) / 10);
-            g2d.drawString(String.format("%.2f",i * (top - bottom) / 10.0), startCoordinate_x / 2, startCoordinate_x + i * (HEIGHT - startCoordinate_y) / 10 + 5);
+            g2d.drawString(String.format("%.2f", i * (top - bottom) / 10.0), startCoordinate_x / 2, startCoordinate_x + i * (HEIGHT - startCoordinate_y) / 10 + 5);
         }
 
         g2d.drawLine(startCoordinate_y, 0, startCoordinate_y, HEIGHT);
 
         for (int i = 1; i <= 10; i++) {
             g2d.drawLine(startCoordinate_y + i * (WIDTH - startCoordinate_x) / 10, startCoordinate_y - 5, startCoordinate_y + i * (WIDTH - startCoordinate_x) / 10, HEIGHT);
-            String s = String.format("%.2f",i * (right - left) / 10.0 + left_r);
+            String s = String.format("%.2f", i * (right - left) / 10.0 + left_r);
             g2d.drawString(s, startCoordinate_y + i * (WIDTH - startCoordinate_x) / 10 - s.length() * 3, startCoordinate_y / 2);
         }
     }
@@ -60,24 +61,36 @@ public class DiagramForTask1 extends JPanel {
         double indent_y = 50;
         double step_length = (right_r - left_r) / WIDTH;
         g2d.setFont(new Font("Tahoma", 0, 12));
-        printAxis(left_r,  right_r, 0, 1, (int) indent_x, (int) indent_y);
+        printAxis(left_r, right_r, 0, 1, (int) indent_x, (int) indent_y);
         g2d.translate(indent_x, indent_y);
 
         g2d.setColor(Color.blue);
-        for (double r = left_r; r <= right_r; r += step_length) {
+
+        for (double r = left_r; r <= right_r; r += step_length * 0.1) {
+            DimasEpsMap.nearestF = new ArrayList<>();
             double x = 0.5;
+            double xFive = x;
+            for (int i = 0; i < 5; i++) {
+                xFive = f(r, xFive);
+            }
             for (int i = 0; i < NUMBER_OF_ITERATION; i++) {
                 x = f(r, x);
             }
-            if (Math.abs(x) > 1) continue;
+                DimasEpsMap.tryFindRStars(r, x, xFive);
+            if (Math.abs(x) > 1) {
+                continue;
+            }
             double first_value = x;
             do {
                 double i = Math.round((r - left_r) * (WIDTH - indent_x) / (right_r - left_r));
                 double j = Math.round(x * (HEIGHT - indent_y));
                 g2d.drawLine((int) i, (int) j, (int) i, (int) j);
                 x = f(r, x);
+                DimasEpsMap.add(x);
             } while (Math.abs(x - first_value) > EPS);
+            DimasEpsMap.tryFindRNumber(r);
         }
         g2d.translate(-indent_x, -indent_y);
+        DimasEpsMap.firstGone = false;
     }
 }
